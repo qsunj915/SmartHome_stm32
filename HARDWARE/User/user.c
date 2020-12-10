@@ -7,8 +7,8 @@
 
 int AlarmUser_Change(int RTC_AlarmUser[])
 {
-	static int flag_Alarm=0, alarm_config=0;
-	int flag=0, flag_change=0;
+	static int flag_Alarm=0, alarm_config=0, flag_change=0;
+	int flag=0;
 	
 	if(WK_UP)
 	{

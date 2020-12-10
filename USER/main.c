@@ -17,7 +17,6 @@ V2.0 实现闹钟功能（定点长时间鸣叫，整点报时）
 V3.0 实现闹钟时间实时调整功能（不包括周）,解决时间超限问题（25：70：70）
 */
 
-
 int main(void)
 { 
 
@@ -25,7 +24,7 @@ int main(void)
 	RTC_DateTypeDef RTC_DateStruct;
 	
 	int RTC_AlarmUser[3]={12,00,0};
-	int flag_cright=0;
+	int flag_cright=0;//用来调试程序
 
 	u8 tbuf[40];
 	u8 t=0;
@@ -73,7 +72,7 @@ int main(void)
 			LCD_ShowString(30,200,210,16,16,tbuf);
 			
 			
-			if(AlarmUser_Change(RTC_AlarmUser))//更改闹钟时间
+			if(AlarmUser_Change(RTC_AlarmUser))//更改闹钟时间==目前BUG：返回值无法传入
 			{
 				RTC_Set_AlarmA(3, RTC_AlarmUser[0], RTC_AlarmUser[1], RTC_AlarmUser[2]);//控制闹钟时间
 				flag_cright = 1;
@@ -82,7 +81,6 @@ int main(void)
 			{
 				Beep_TimeBar();
 			}
-			//RTC_Set_AlarmA(3, RTC_AlarmUser[0], RTC_AlarmUser[1], RTC_AlarmUser[2]);//控制闹钟时间
 			
 			//Beep_AutoCut();
 			
@@ -101,3 +99,5 @@ int main(void)
 		delay_ms(10);
 	}	
 }
+
+
