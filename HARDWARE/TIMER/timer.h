@@ -15,6 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////// 	
 
 void TIM3_Int_Init(u16 arr,u16 psc);
+void TIM14_Int_Init(u16 arr,u16 psc);
 
 
 #define TIME_s 5

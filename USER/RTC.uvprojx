@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\HARDWARE\LED;..\HARDWARE\LCD;..\FWLIB\inc;..\HARDWARE\RTC;..\USMART;..\HARDWARE\KEY;..\HARDWARE\BEEP;..\HARDWARE\User;..\HARDWARE\TIMER;..\HARDWARE\EXTI</IncludePath>
+              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\HARDWARE\LED;..\HARDWARE\LCD;..\FWLIB\inc;..\HARDWARE\RTC;..\USMART;..\HARDWARE\KEY;..\HARDWARE\BEEP;..\HARDWARE\User;..\HARDWARE\TIMER;..\HARDWARE\DJ-qsunj</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -464,9 +464,9 @@
               <FilePath>..\HARDWARE\User\user.c</FilePath>
             </File>
             <File>
-              <FileName>exti.c</FileName>
+              <FileName>dj.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\HARDWARE\EXTI\exti.c</FilePath>
+              <FilePath>..\HARDWARE\DJ-qsunj\dj.c</FilePath>
             </File>
           </Files>
         </Group>

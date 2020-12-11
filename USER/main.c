@@ -9,7 +9,7 @@
 #include "key.h"
 #include "timer.h"
 #include "user.h"
-#include "exti.h"
+#include "dj.h"
 
 /*
 V1.0 实现基本的显示时钟功能
@@ -39,7 +39,7 @@ int main(void)
 	BEEP_Init();				//初始化BEEP
 	KEY_Init();					//初始化kEY
  	LCD_Init();					  //初始化LCD
-	//EXTIX_Init();
+	TIM14_Int_Init(200-1, 8400-1);				//PWM 0.1ms*20ms
 	My_RTC_Init();		 		//初始化RTC
 	RTC_Set_AlarmA(3, 12, 00, 00);			//开启闹钟：时间：week3,12:00:00
  
@@ -72,7 +72,7 @@ int main(void)
 			LCD_ShowString(30,200,210,16,16,tbuf);
 			
 			
-			if(AlarmUser_Change(RTC_AlarmUser))//更改闹钟时间==目前BUG：返回值无法传入
+			if(AlarmUser_Change(RTC_AlarmUser))//更改闹钟时间==解决BUG（2020/12/11）：返回值无法传入
 			{
 				RTC_Set_AlarmA(3, RTC_AlarmUser[0], RTC_AlarmUser[1], RTC_AlarmUser[2]);//控制闹钟时间
 				flag_cright = 1;
@@ -82,6 +82,7 @@ int main(void)
 				Beep_TimeBar();
 			}
 			
+			Angle_Cmd();		//添加舵机（门的控制）2020/12/11
 			//Beep_AutoCut();
 			
 			/*废物中*2020/12/8
