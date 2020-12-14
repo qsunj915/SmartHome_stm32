@@ -1,31 +1,12 @@
 #include "dj.h"
 #include "delay.h"
+#include "key.h"
 
 int angle=0, angle_local=0;
 
 
 void Angle_Cmd()
 {
-		/*
-		if(!KEY_DOOR)
-		{
-			delay_ms(10);
-			if(!KEY_DOOR)
-				angle += 45;
-			if(angle>180)
-				angle = angle_local;
-			while(!KEY_DOOR);//松开按键标志
-		}
-		if(!KEY_DOOR)//控制初始角度位置
-		{
-			delay_ms(10);
-			if(!KEY_DOOR)
-			{
-				angle_local = angle;
-				while(!KEY_DOOR);
-			}
-		}*/
-	
 	if(!KEY_DOOR)
 	{
 		delay_ms(10);
@@ -45,9 +26,7 @@ int Data_pro(int angle)		//KEY_DOOR定义在dj.h中
 	int lo_data;//装载值
 	int angle_current;
 	
-	angle_current = angle-angle_local;
-	if(angle_current<0)
-		angle_current += 180;
+	angle_current = angle;
 	
 	switch(angle_current)
 	{

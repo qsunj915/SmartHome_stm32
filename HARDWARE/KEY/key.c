@@ -1,5 +1,8 @@
 #include "key.h"
 #include "delay.h" 
+#include "sys.h"
+
+u8 mode=0;//控制模式
 
 //按键初始化函数
 void KEY_Init(void)
@@ -22,6 +25,17 @@ void KEY_Init(void)
  
 } 
 
+
+void KEY_ModeChange(void)
+{
+	if(WK_UP)
+	{
+		delay_ms(10);
+		if(WK_UP)
+			mode++;
+		while(WK_UP);
+	}
+}
 
 
 

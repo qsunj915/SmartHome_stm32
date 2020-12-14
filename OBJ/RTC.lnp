@@ -9,7 +9,7 @@
 "..\obj\beep.o"
 "..\obj\timer.o"
 "..\obj\user.o"
-"..\obj\exti.o"
+"..\obj\dj.o"
 "..\obj\delay.o"
 "..\obj\sys.o"
 "..\obj\usart.o"

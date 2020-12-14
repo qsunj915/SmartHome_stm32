@@ -6,6 +6,8 @@
 void Time_RightCheck(void);
 */
 
+extern int alarm_config;
+
 int AlarmUser_Change(int RTC_AlarmUser[]);
 void Alarm_RightCheck(int RTC_AlarmUser[]);
 	    

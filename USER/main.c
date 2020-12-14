@@ -24,10 +24,10 @@ int main(void)
 	RTC_DateTypeDef RTC_DateStruct;
 	
 	int RTC_AlarmUser[3]={12,00,0};
-	int flag_cright=0;//用来调试程序
 
 	u8 tbuf[40];
 	u8 t=0;
+
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置系统中断优先级分组2
 	delay_init(168);      //初始化延时函数
 	uart_init(115200);		//初始化串口波特率为115200
@@ -39,9 +39,9 @@ int main(void)
 	BEEP_Init();				//初始化BEEP
 	KEY_Init();					//初始化kEY
  	LCD_Init();					  //初始化LCD
-	TIM14_Int_Init(200-1, 8400-1);				//PWM 0.1ms*20ms
+	TIM14_PWM_Init(200-1, 8400-1);				//PWM 0.1ms*20ms
 	My_RTC_Init();		 		//初始化RTC
-	RTC_Set_AlarmA(3, 12, 00, 00);			//开启闹钟：时间：week3,12:00:00
+	RTC_Set_AlarmA(3, 20, 10, 00);			//开启闹钟：时间：week3,12:00:00
  
 	RTC_Set_WakeUp(RTC_WakeUpClock_CK_SPRE_16bits,0);		//配置WAKE UP中断,1秒钟中断一次
 	
@@ -51,51 +51,70 @@ int main(void)
 	LCD_ShowString(30,90,200,16,16, "Author@YiXieTe");
 	LCD_ShowString(30,110,200,16,16, "2020/12/8*V3.0");	
   	while(1) 
-	{		
-		t++;
-		if((t%10)==0)	//每100ms更新一次显示数据
+	{	
+		/*模式一：实时时钟*/
+		if(mode==0)
 		{
-			RTC_GetTime(RTC_Format_BIN,&RTC_TimeStruct);
-			
-			sprintf((char*)tbuf,"Time:%02d:%02d:%02d",RTC_TimeStruct.RTC_Hours,RTC_TimeStruct.RTC_Minutes,RTC_TimeStruct.RTC_Seconds); 
-			LCD_ShowString(30,140,210,16,16,tbuf);	
-			
-			RTC_GetDate(RTC_Format_BIN, &RTC_DateStruct);
-			
-			sprintf((char*)tbuf,"Date:20%02d-%02d-%02d",RTC_DateStruct.RTC_Year,RTC_DateStruct.RTC_Month,RTC_DateStruct.RTC_Date); 
-			LCD_ShowString(30,160,210,16,16,tbuf);	
-			sprintf((char*)tbuf,"Week:%d",RTC_DateStruct.RTC_WeekDay); 
-			LCD_ShowString(30,180,210,16,16,tbuf);
-			
-			//闹钟显示
-			sprintf((char*)tbuf,"Alarm:%02d:%02d:%02d,%02d",RTC_AlarmUser[0], RTC_AlarmUser[1], RTC_AlarmUser[2], flag_cright); 
-			LCD_ShowString(30,200,210,16,16,tbuf);
-			
-			
-			if(AlarmUser_Change(RTC_AlarmUser))//更改闹钟时间==解决BUG（2020/12/11）：返回值无法传入
+			t++;
+			if((t%10)==0)	//每100ms更新一次显示数据
 			{
-				RTC_Set_AlarmA(3, RTC_AlarmUser[0], RTC_AlarmUser[1], RTC_AlarmUser[2]);//控制闹钟时间
-				flag_cright = 1;
-			}
-			if((!RTC_TimeStruct.RTC_Seconds) && (!RTC_TimeStruct.RTC_Minutes))//整点报时
-			{
-				Beep_TimeBar();
-			}
-			
-			Angle_Cmd();		//添加舵机（门的控制）2020/12/11
-			//Beep_AutoCut();
-			
-			/*废物中*2020/12/8
-			if(!WK_UP)
-			{
-				delay_ms(10);
-				if(!WK_UP)
-				{
-					TimeUser_init();
-				}
+				RTC_GetTime(RTC_Format_BIN,&RTC_TimeStruct);
 				
-			}*/
-		} 
+				sprintf((char*)tbuf,"Time:%02d:%02d:%02d",RTC_TimeStruct.RTC_Hours,RTC_TimeStruct.RTC_Minutes,RTC_TimeStruct.RTC_Seconds); 
+				LCD_ShowString(30,140,210,16,16,tbuf);	
+				
+				RTC_GetDate(RTC_Format_BIN, &RTC_DateStruct);
+				
+				sprintf((char*)tbuf,"Date:20%02d-%02d-%02d",RTC_DateStruct.RTC_Year,RTC_DateStruct.RTC_Month,RTC_DateStruct.RTC_Date); 
+				LCD_ShowString(30,160,210,16,16,tbuf);	
+				sprintf((char*)tbuf,"Week:%d",RTC_DateStruct.RTC_WeekDay); 
+				LCD_ShowString(30,180,210,16,16,tbuf);
+				
+				//闹钟显示
+				sprintf((char*)tbuf,"Alarm:%02d:%02d:%02d,%02d",RTC_AlarmUser[0], RTC_AlarmUser[1], RTC_AlarmUser[2], alarm_config); 
+				LCD_ShowString(30,200,210,16,16,tbuf);
+				
+				
+				if(AlarmUser_Change(RTC_AlarmUser))//更改闹钟时间==解决BUG（2020/12/11）：返回值无法传入
+				{
+					RTC_Set_AlarmA(3, RTC_AlarmUser[0], RTC_AlarmUser[1], RTC_AlarmUser[2]);//控制闹钟时间
+				}
+				if((!RTC_TimeStruct.RTC_Seconds) && (!RTC_TimeStruct.RTC_Minutes))//整点报时
+				{
+					Beep_TimeBar();
+				}
+			} 
+		}
+		
+		/*模式二：温湿度显示*/
+		else if(mode==1)
+		{
+			
+		}
+		
+		/*模式三：门的控制*/
+		else if(mode==2)
+		{
+			Angle_Cmd();		//添加舵机（门的控制）2020/12/11
+		}
+		
+		/*模式四：窗帘的控制*/
+		else if(mode==3)
+		{
+			
+		}
+		
+		/*模式修正*/
+		else mode = 0;
+		
+		
+		/*模式切换函数*/
+		KEY_ModeChange();
+		
+		/*显示现在位于的模式*/
+		sprintf((char*)tbuf,"MODE:%02d",mode); 
+		LCD_ShowString(30,220,210,16,16,tbuf);
+		
 		if((t%20)==0)LED0=!LED0;	//每200ms,翻转一次LED0 
 		delay_ms(10);
 	}	

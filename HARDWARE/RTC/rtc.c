@@ -52,7 +52,7 @@ u8 My_RTC_Init(void)
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);//使能PWR时钟
 	PWR_BackupAccessCmd(ENABLE);	//使能后备寄存器访问 
 	
-	if(RTC_ReadBackupRegister(RTC_BKP_DR0)!=0x5050)		//是否第一次配置?
+	if(RTC_ReadBackupRegister(RTC_BKP_DR0)!=0x5051)		//是否第一次配置?
 	{
 		RCC_LSEConfig(RCC_LSE_ON);//LSE 开启    
 		while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)	//检查指定的RCC标志位设置与否,等待低速晶振就绪
@@ -70,10 +70,10 @@ u8 My_RTC_Init(void)
     RTC_InitStructure.RTC_HourFormat   = RTC_HourFormat_24;//RTC设置为,24小时格式
     RTC_Init(&RTC_InitStructure);
  
-		RTC_Set_Time(12,00,00,RTC_H12_AM);	//设置时间
-		RTC_Set_Date(20,11,26,3);		//设置日期
+		RTC_Set_Time(20,05,00,RTC_H12_AM);	//设置时间
+		RTC_Set_Date(20,12,14,3);		//设置日期
 	 
-		RTC_WriteBackupRegister(RTC_BKP_DR0,0x5050);	//标记已经初始化过了
+		RTC_WriteBackupRegister(RTC_BKP_DR0,0x5051);	//标记已经初始化过了
 	} 
  
 	return 0;

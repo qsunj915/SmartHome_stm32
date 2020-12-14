@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////// 	
 
 void TIM3_Int_Init(u16 arr,u16 psc);
-void TIM14_Int_Init(u16 arr,u16 psc);
+void TIM14_PWM_Init(u32 arr,u32 psc);
 
 
 #define TIME_s 5

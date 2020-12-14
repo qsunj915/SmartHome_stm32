@@ -3,7 +3,7 @@
 
 #include "stm32f4xx.h"
 
-#define KEY_DOOR PAin(9)
+#define KEY_DOOR KEY0
 
 extern int angle, angle_local;
 

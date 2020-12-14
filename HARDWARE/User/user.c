@@ -5,17 +5,19 @@
 #include "rtc.h"
 #include "sys.h"
 
+int alarm_config=0;
+
 int AlarmUser_Change(int RTC_AlarmUser[])
 {
-	static int flag_Alarm=0, alarm_config=0, flag_change=0;
+	static int flag_Alarm=0, flag_change=0;
 	int flag=0;
 	
-	if(WK_UP)
+	if(!KEY0)
 	{
 		delay_ms(10);
-		if(WK_UP)
+		if(!KEY0)
 		{
-			while(WK_UP);//松开按键
+			while(!KEY0);//松开按键
 			alarm_config = !alarm_config;//使能实时控制闹钟&&失能时写入闹钟
 			if(alarm_config==0 && flag_change==1)
 			{
@@ -27,31 +29,23 @@ int AlarmUser_Change(int RTC_AlarmUser[])
 		
 	if(alarm_config)
 	{
-		if(!KEY2)
-		{
-			delay_ms(10);
-			if(!KEY2)
-				RTC_AlarmUser[flag_Alarm]++;
-			while(!KEY2);
-		}
-		
 		if(!KEY1)
 		{
 			delay_ms(10);
 			if(!KEY1)
-			RTC_AlarmUser[flag_Alarm]--;
+				RTC_AlarmUser[flag_Alarm]++;
 			while(!KEY1);
 		}
-	
-		if(!KEY0)
+		
+		if(!KEY2)
 		{
 			delay_ms(10);
-			if(!KEY0)
+			if(!KEY2)
 			{
 				flag_Alarm++;
 				if(flag_Alarm==3)
 					flag_Alarm = 0;
-				while(!KEY0);
+				while(!KEY2);
 			}
 		}
 		flag_change = 1;//标志数据更改过
