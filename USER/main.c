@@ -40,6 +40,8 @@ int main(void)
 	KEY_Init();					//初始化kEY
  	LCD_Init();					  //初始化LCD
 	TIM14_PWM_Init(200-1, 8400-1);				//PWM 0.1ms*20ms
+	TIM5_PWM_Init(200-1, 8400-1);				//PWM 0.1ms*20ms
+	TIM_SetCompare1(TIM14, 5);
 	My_RTC_Init();		 		//初始化RTC
 	RTC_Set_AlarmA(3, 20, 10, 00);			//开启闹钟：时间：week3,12:00:00
  
@@ -95,13 +97,13 @@ int main(void)
 		/*模式三：门的控制*/
 		else if(mode==2)
 		{
-			Angle_Cmd();		//添加舵机（门的控制）2020/12/11
+			Angle_DoorCmd();		//添加舵机（门的控制）2020/12/11
 		}
 		
 		/*模式四：窗帘的控制*/
 		else if(mode==3)
 		{
-			
+			Angle_CURTCmd();		//添加舵机（门的控制）2020/12/11
 		}
 		
 		/*模式修正*/

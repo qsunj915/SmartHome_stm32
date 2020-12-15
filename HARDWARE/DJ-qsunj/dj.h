@@ -8,7 +8,8 @@
 extern int angle, angle_local;
 
 
-void Angle_Cmd(void);
+void Angle_DoorCmd(void);
+void Angle_CURTCmd(void);
 int Data_pro(int);//输入角度，输出比较值
 
 
